@@ -20,7 +20,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   cookie: {
-    maxAge: 6000000
+    maxAge: 9999999999999
   }
 }))
 app.use(flash())

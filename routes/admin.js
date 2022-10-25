@@ -16,6 +16,8 @@ router.get('/', (req, res, next) => {
   res.render('pages/admin', {
     title: 'Admin page',
     skills: skills,
+    msgskill: req.flash('skills')[0],
+    msgfile: req.flash('upload')[0]
   })
 })
 
@@ -30,9 +32,17 @@ router.post('/skills', (req, res, next) => {
   skills[2].number = cities;
   skills[3].number = years;
 
-  fs.writeFileSync('data.json', JSON.stringify({skills, products}, null, 2));
+  if(age !== '' && concerts !== '' && cities !== '' && years !== '') {
+    fs.writeFileSync('data.json', JSON.stringify({skills, products}, null, 2));
 
-  res.redirect('/')
+    req.flash('skills', 'Данные изменены');
+
+    res.redirect('/admin')
+  } else {
+    req.flash('skills', 'Все поля должны быть заполнены!');
+
+    return res.redirect('/admin')
+  }
 })
 
 router.post('/upload', (req, res, next) => {
@@ -42,6 +52,16 @@ router.post('/upload', (req, res, next) => {
   form.uploadDir = path.join(process.cwd(), upload)
 
   form.parse(req, function (err, fields, files) {
+    let valuesFields = Object.values(fields);
+
+    valuesFields.forEach(item => {
+      if(item === '') {
+        req.flash('upload', 'Все поля должны быть заполнены!');
+
+        return
+      }
+    })
+
     if (err) {
       return next(err)
     }
@@ -62,7 +82,9 @@ router.post('/upload', (req, res, next) => {
 
       fs.writeFileSync('data.json', JSON.stringify({skills, products}, null, 2));
 
-      res.redirect('/')
+      req.flash('upload', 'Товары добавлены на главнуют страницу!');
+
+      res.redirect('/admin')
     })
   })
 })

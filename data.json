@@ -1,15 +1,15 @@
 {
   "skills": [
     {
-      "number": "12",
+      "number": "2",
       "text": "Возраст начала занятий на скрипке"
     },
     {
-      "number": "32",
+      "number": "2",
       "text": "Концертов отыграл"
     },
     {
-      "number": "14",
+      "number": "2",
       "text": "Максимальное число городов в туре"
     },
     {
@@ -72,6 +72,21 @@
       "name": "cvbn",
       "price": "432",
       "src": "\\assets\\img\\products\\main-banner-4.webp"
+    },
+    {
+      "name": "",
+      "price": "",
+      "src": "\\assets\\img\\products\\catalog-article.webp"
+    },
+    {
+      "name": "йцу",
+      "price": "йцу",
+      "src": "\\assets\\img\\products\\catalog-article.webp"
+    },
+    {
+      "name": "фв",
+      "price": "фв",
+      "src": "\\assets\\img\\products\\catalog-interest.webp"
     }
   ]
 }

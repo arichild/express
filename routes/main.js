@@ -4,7 +4,7 @@ const { products, skills } = require('../data.json')
 const nodemailer = require('nodemailer')
 
 router.get('/', (req, res, next) => {
-  res.render('pages/index', { title: 'Main page', products, skills })
+  res.render('pages/index', { title: 'Main page', products, skills, msgemail: req.flash('form')[0]})
 })
 
 router.post('/', (req, res, next) => {
@@ -12,32 +12,38 @@ router.post('/', (req, res, next) => {
   let email = req.body.email
   let msg = req.body.message
 
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'arieevq@gmail.com',
-      pass: 'szyixzhhhbpkborl'
-    }
-  })
+  if(name !== '' && email !== '' && msg !== '') {
+    let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'arieevq@gmail.com',
+        pass: 'szyixzhhhbpkborl'
+      }
+    })
 
-  let mailOption = {
-    from: email,
-    to: 'arieevq@gmail.com',
-    subject: name,
-    text: msg,
+    let mailOption = {
+      from: email,
+      to: 'arieevq@gmail.com',
+      subject: name,
+      text: msg,
+    }
+
+    transporter.sendMail(mailOption, function(err, info) {
+      if(err) {
+        console.log(err)
+      } else {
+        console.log('email sent ' + info)
+      }
+
+      req.flash('form', 'Сообщение отправлено!');
+
+      res.redirect('/#form')
+    })
+  } else {
+    req.flash('form', 'Поля не могут быть пустыми');
+
+    return res.redirect('/#form')
   }
-
-  console.log(mailOption)
-
-  transporter.sendMail(mailOption, function(err, info){
-    if(err) {
-      console.log(err)
-    } else {
-      console.log('email sent ' + info)
-    }
-
-    res.redirect('/')
-  })
 })
 
 module.exports = router
